@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load hastag %}
+{% block content %}
+<div>
+    <div class="mt-2 mb-5">
+        <h1 class="text-center">{{title}}</h1>
+    </div>
+
+    <div class="mt-2">
+        {% if show %}
+            <table class="table">
+                <tbody class="fs-5">
+                    <tr class="align-middle">
+                        <th class="col-3">Type</th>
+                        <td class="col-9">{{show.type}}</td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Countries</th>
+                        <td class="col-9">
+                        {% for country in show.countries %}
+                            <span class="badge rounded-pill bg-dark">{{country}}</span>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Description</th>
+                        <td class="col-9">{{show.description}}</td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Date Added to Netflix</th>
+                        <td class="col-9">{{show.date_added}}</td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Release Year</th>
+                        <td class="col-9">{{show.release_year}}</td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Duration</th>
+                        <td class="col-9">{{show.duration}}</td>
+                    </tr>
+                    <tr class="align-middle">
+                        <th class="col-3">Listed In</th>
+                        <td class="col-9">
+                        {% for l in show.listed_in %}
+                            <span class="badge rounded-pill bg-dark">{{l}}</span>
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    {% if show.directors %}
+                    <tr class="align-middle">
+                        <th class="col-3">Directors</th>
+                        <td class="col-9">
+                        {% for person in show.directors %}
+                            <a
+                                class="btn btn-outline-dark mb-1"
+                                href="{% url 'person' %}?name={{person}}"
+                                >{{person}}</a
+                            >
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if show.cast %}
+                    <tr class="align-middle">
+                        <th class="col-3">Cast</th>
+                        <td class="col-9">
+                            {% for person in show.cast %}
+                                <a
+                                    class="btn btn-outline-dark  mb-1"
+                                    href="{% url 'person' %}?name={{person}}"
+                                    >{{person}}</a
+                                >
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        {% else %}
+        <div class="alert alert-danger" role="alert">No Data Founded!</div>
+        {% endif %}
+    </div>
+
+    <div class="mt-2">
+        <a
+            class="btn btn-danger w-100"
+            href="{% url 'edit_show' %}?title={{title|hastag}}"
+            role="button"
+            >Edit</a
+        >
+    </div>
+</div>
+{% endblock %}

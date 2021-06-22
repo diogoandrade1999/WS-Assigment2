@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <div class="mt-2 mb-2">
+        <img src="{% static 'img/home.jpg' %}" class="img-fluid" />
+    </div>
+
+    <div class="mt-5 row">
+        <div class="col-4" >
+            <i class="fa fa-film fa-2x"></i>
+            <h2>Shows</h2>
+            <p>You can search for a particular show and find out detailed information about it!</p>
+        </div>
+        <div class="col-4">
+            <i class="fa fa-video-camera fa-2x"></i>
+            <h2>Directors</h2>
+            <p>You can find out which director was behind a particular film or even all of their films!</p>
+        </div>
+        <div class="col-4">
+            <i class="fa fa-user fa-2x"></i>
+            <h2>Actors</h2>
+            <p>You can search for your favorite actor and find out what movies he was in!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

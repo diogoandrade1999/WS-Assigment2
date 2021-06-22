@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load hastag %}
+{% block content %}
+<div>
+    <div class="mt-2 mb-5">
+        <h1 class="text-center">Directors</h1>
+    </div>
+
+    <div class="mt-2 mb-5">
+        <form action="{% url 'directors' %}" method="post" class="row">
+            {% csrf_token %}
+            <div class="col-9">
+                <input type="text" class="form-control w-100" name="searchDirectorName" id="searchDirectorName" placeholder="Director Name" {% if name %}value="{{name}}"{% endif %}>
+            </div>
+            <div class="col-3">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mt-2">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Shows</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if directors %} {% for director, shows in directors.items %}
+                <tr class="align-middle">
+                    <td class="col-4">
+                        <a
+                            class="btn btn-outline-dark w-100"
+                            href="{% url 'person' %}?name={{director}}"
+                            >{{director}}</a
+                        >
+                    </td>
+                    <td class="col-8">
+                        <ul class="list-unstyled list-group">
+                            {% for show in shows %}
+                            <li class="mb-1">
+                                <a
+                                    class="btn btn-outline-dark w-100"
+                                    href="{% url 'show' %}?title={{show|hastag}}"
+                                    >{{show}}</a
+                                >
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %} {% else %}
+                <tr class="text-center">
+                    <td colspan="3">No Entries Founded!</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-2 d-flex justify-content-between">
+        {% if previous_page is not None %}
+        <a
+            class="btn btn-primary w-25"
+            href="{% url 'directors' %}?page={{previous_page}}{% if name %}&searchDirectorName={{name}}{% endif %}"
+            role="button"
+            >Previous Page</a
+        >
+        {% else %}
+        <span class="w-25"></span>
+        {% endif %}
+        {% if next_page is not None %}
+        <a
+            class="btn btn-primary w-25"
+            href="{% url 'directors' %}?page={{next_page}}{% if name %}&searchDirectorName={{name}}{% endif %}"
+            role="button"
+            >Next Page</a
+        >
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
