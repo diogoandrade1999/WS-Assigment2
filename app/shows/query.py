@@ -1,5 +1,4 @@
-from SPARQLWrapper import SPARQLWrapper, JSON, POST
-
+from SPARQLWrapper import SPARQLWrapper, JSON, POST, SPARQLWrapper2
 
 URL = "http://127.0.0.1:7200/repositories/shows"
 
@@ -53,10 +52,10 @@ def list_shows(page):
             for d in data:
                 title = d['title']['value']
                 results[title] = {'type': d['typename']['value'],
-                                'countries': list(set(d['countriesname']['value'].split(','))),
-                                'listed_in': list(set(d['listedname']['value'].split(','))),
-                                'release_year': d['release_yearname']['value'],
-                                }
+                                  'countries': list(set(d['countriesname']['value'].split(','))),
+                                  'listed_in': list(set(d['listedname']['value'].split(','))),
+                                  'release_year': d['release_yearname']['value'],
+                                  }
         return results
     except Exception:
         return None
@@ -239,9 +238,9 @@ def person_detail(name):
                         directors = directors.split(';')
                         directors.remove(name)
                     results1[title] = {'type': d['typename']['value'],
-                                    'countries': d['countriesname']['value'].split(';'),
-                                    'directors': directors
-                                    }
+                                       'countries': d['countriesname']['value'].split(';'),
+                                       'directors': directors
+                                       }
     except Exception:
         results1 = None
 
@@ -285,6 +284,9 @@ def person_detail(name):
                                        }
     except Exception:
         results2 = None
+
+    wiki_person_data(name)
+
     return results1, results2
 
 
@@ -336,15 +338,15 @@ def show_detail(title):
                 if cast != "":
                     cast = cast.split(';')
                 results = {'type': d['typename']['value'],
-                            'description': d['description']['value'],
-                            'date_added': d['date_added']['value'],
-                            'release_year': d['release_yearname']['value'],
-                            'duration': d['durationname']['value'],
-                            'countries': d['countriesname']['value'].split(';'),
-                            'listed_in': d['listedname']['value'].split(';'),
-                            'directors': directors,
-                            'cast': cast
-                            }
+                           'description': d['description']['value'],
+                           'date_added': d['date_added']['value'],
+                           'release_year': d['release_yearname']['value'],
+                           'duration': d['durationname']['value'],
+                           'countries': d['countriesname']['value'].split(';'),
+                           'listed_in': d['listedname']['value'].split(';'),
+                           'directors': directors,
+                           'cast': cast
+                           }
         return results
     except Exception:
         return None
@@ -382,10 +384,10 @@ def search_shows(page, title, types_list, countries_list, listed_in_list):
             for d in data:
                 title = d['title']['value']
                 results[title] = {'type': d['typename']['value'],
-                                'countries': list(set(d['countriesname']['value'].split(','))),
-                                'listed_in': list(set(d['listedname']['value'].split(','))),
-                                'release_year': d['release_yearname']['value'],
-                                }
+                                  'countries': list(set(d['countriesname']['value'].split(','))),
+                                  'listed_in': list(set(d['listedname']['value'].split(','))),
+                                  'release_year': d['release_yearname']['value'],
+                                  }
         return results
     except Exception as e:
         print(e)
@@ -571,3 +573,67 @@ def show_edit(title, description, type_show, countries_list,
             results = sparql.query()
         except Exception:
             pass
+
+
+# https://query.wikidata.org/
+def wiki_person_data(name):
+    n = '"' + name + '"'
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    sparql.setQuery("""
+    SELECT ?item ?itemLabel ?sex_name ?birthLocal_name ?birthDate ?dateOfDeath (group_concat(?profession_name; separator="|") as ?profession_names) WHERE 
+    {
+    # search for person
+    ?item wdt:P31 wd:Q5.
+    ?item ?label""" + n + """ @en.
+    ?item rdfs:label ?itemLabel.
+  
+    # search profession and profession name
+    ?item wdt:P106 ?profession. 
+    ?profession ?label ?profession_name. 
+    filter(lang(?profession_name) = 'en').
+      
+    # sex
+    OPtional {?item wdt:P21 ?sex. ?sex ?label ?sex_name. filter(lang(?sex_name) = 'en').}
+      
+    # country where he/she was born
+    OPtional {?item wdt:P27 ?birthLocal. ?birthLocal ?label ?birthLocal_name. filter(lang(?birthLocal_name) = 'en').}
+      
+    # date of birth
+    OPtional {?item wdt:P569 ?birthDate. }
+      
+    # date of death
+    Optional {?item wdt:P570 ?dateOfDeath.}
+      
+    #FILTER (?profession IN (wd:Q33999) wd:Q2526255, wd:Q28389))          # filter for actors, directors or screenwriters (exclude all other professions)
+    FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).                         # english only
+    FILTER regex (?itemLabel, "^""" + name + """$").                      # Exact match
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    # Label in english only
+    }
+    group by ?item ?itemLabel ?sex_name ?birthLocal_name ?birthDate ?dateOfDeath
+    Limit 1
+     """)
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    try:
+        if results and results['results']['bindings'] != []:
+            data = results['results']['bindings']
+            results = {}
+            # print(data)
+            for d in data:
+                results['wiki_link'] = d['item']['value'] if 'item' in d else ""
+                results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+                results['sex'] = d['sex_name']['value'] if 'sex_name' in d else ""
+                results['birthLocation'] = d['birthLocal_name']['value'] if 'birthLocal_name' in d else ""
+                results['birhtDate'] = d['birthDate']['value'] if 'birthDate' in d else ""
+                results['deathDate'] = d['dateOfDeath']['value'] if 'dateOfDeath' in d else "still alive"
+                results['professions'] = d['profession_names']['value'].split('|') if 'profession_names' in d else ""
+            print(results)
+            return results
+        else:
+            print("Failed to find data")
+    except Exception:
+        print("Error")
+        return None
+
+    return
