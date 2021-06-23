@@ -29,10 +29,10 @@
             </thead>
             <tbody>
                 {% if directors %} {% for director, shows in directors.items %}
-                <tr class="align-middle">
+                <tr class="align-middle h-card">
                     <td class="col-4">
                         <a
-                            class="btn btn-outline-dark w-100"
+                            class="btn btn-outline-dark w-100 p-name"
                             href="{% url 'person' %}?name={{director}}"
                             >{{director}}</a
                         >
@@ -40,9 +40,9 @@
                     <td class="col-8">
                         <ul class="list-unstyled list-group">
                             {% for show in shows %}
-                            <li class="mb-1">
+                            <li class="mb-1 h-entry">
                                 <a
-                                    class="btn btn-outline-dark w-100"
+                                    class="btn btn-outline-dark w-100 p-title u-url"
                                     href="{% url 'show' %}?title={{show|hastag}}"
                                     >{{show}}</a
                                 >
