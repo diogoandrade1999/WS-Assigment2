@@ -326,6 +326,7 @@ def show_detail(title):
     """)
     sparql.setReturnFormat(JSON)
 
+    wiki_show_data(title)
     try:
         results = sparql.query().convert()
         if results:
@@ -637,3 +638,67 @@ def wiki_person_data(name):
         return None
 
     return
+
+
+def wiki_show_data(name):
+    n = '"' + name + '"'
+    sparql = SPARQLWrapper("https://query.wikidata.org/sparql")
+    sparql.setQuery("""
+    SELECT ?item ?itemLabel ?type_name ?publicatioDate ?time (group_concat(?genre_name; separator="|") as ?genres) (group_concat(?award_name; separator="|") as ?awards)WHERE 
+    {
+    # search for person
+    ?item ?label""" + n + """ @en.
+    ?item rdfs:label ?itemLabel.
+    FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).
+    
+    # Type 
+    Optional {?item wdt:P31 ?type. ?type rdfs:label ?type_name. FILTER(LANGMATCHES(LANG(?type_name),  'en')).}
+      
+    # genres
+     ?item wdt:P136 ?genre.
+     ?genre ?label ?genre_name.
+     filter(lang(?genre_name) = 'en').
+      
+    #publication date
+    Optional {?item wdt:P577 ?publicatioDate.}
+      
+    #duration
+    Optional {?item wdt:P2047 ?time.}
+      
+    # awards
+    Optional {?item wdt:P166 ?award. ?award ?label ?award_name. filter(lang(?award_name) = 'en').}
+    
+    FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).                         # english only
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }    # Label in english only
+    }
+  group by ?item ?itemLabel ?type_name ?publicatioDate ?time
+  Limit 1
+  """)
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    try:
+        if results and results['results']['bindings'] != []:
+            data = results['results']['bindings']
+            results = {}
+            # print(data)
+            for d in data:
+                results['wiki_link'] = d['item']['value'] if 'item' in d else ""
+                results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+                results['show_type'] = d['type_name']['value'] if 'type_name' in d else ""
+                results['publicatioDate'] = d['publicatioDate']['value'] if 'publicatioDate' in d else ""
+                results['duration'] = d['time']['value'] if 'time' in d else ""
+                results['genres'] = d['genres']['value'].split('|') if 'genres' in d else ""
+                results['awards'] = d['awards']['value'].split('|') if 'awards' in d else ""
+            print(results)
+            return results
+        else:
+            print("Failed to find data")
+    except Exception:
+        print("Error")
+        return None
+
+    return
+
+
+
