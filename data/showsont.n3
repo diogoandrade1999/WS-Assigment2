@@ -8,9 +8,12 @@
 
 foaf:Person rdf:type rdfs:Class .
 
-pred:people rdfs:subClassOf foaf:Person .
+pred:name rdfs:subPropertyOf foaf:name .
 
-foaf:Group rdf:type rdfs:Class .
+pred:people rdf:type rdfs:Class .
+
+pred:people rdfs:subClassOf foaf:Person ;
+          rdfs:domain pred:name .
 
 show:Show rdf:type rdfs:Class .
 
@@ -53,5 +56,3 @@ pred:description rdf:type rdf:Property ;
 pred:title rdf:type rdf:Property ;
           rdfs:domain show:Show ;
           rdfs:range rdfs:Literal .
-
-pred:cast rdfs:subClassOf foaf:Group .
