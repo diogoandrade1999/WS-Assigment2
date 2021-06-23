@@ -8,6 +8,10 @@
 
 foaf:Person rdf:type rdfs:Class .
 
+foaf:Group rdf:type rdfs:Class .
+
+pred:cast rdfs:subClassOf foaf:Group .
+
 pred:name rdfs:subPropertyOf foaf:name .
 
 pred:people rdf:type rdfs:Class .
