@@ -1,0 +1,57 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+@prefix show: <http://show.org/show/> .
+@prefix pred: <http://shows.org/pred/> .
+
+foaf:Person rdf:type rdfs:Class .
+
+pred:people rdfs:subClassOf foaf:Person .
+
+foaf:Group rdf:type rdfs:Class .
+
+show:Show rdf:type rdfs:Class .
+
+pred:type rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:cast rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range pred:people .
+
+pred:director rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range pred:people .
+
+pred:country rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:release_year rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:duration rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:listed_in rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:date_added rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:description rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:title rdf:type rdf:Property ;
+          rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+pred:cast rdfs:subClassOf foaf:Group .
