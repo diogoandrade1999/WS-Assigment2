@@ -286,6 +286,7 @@ def person_detail(name):
         results2 = None
 
     wiki_person_data(name)
+    dbpedia_search_person(name)
 
     return results1, results2
 
@@ -327,6 +328,7 @@ def show_detail(title):
     sparql.setReturnFormat(JSON)
 
     wiki_show_data(title)
+    db_search_show(title)
     try:
         results = sparql.query().convert()
         if results:
@@ -701,4 +703,81 @@ def wiki_show_data(name):
     return
 
 
+def dbpedia_search_person(name):
+    n = '"' + name + '"'
+    sparql = SPARQLWrapper("https://dbpedia.org/sparql")
+    sparql.setQuery(
+        """
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    prefix ont: <http://dbpedia.org/ontology/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    
+    SELECT ?item ?itemLabel?abstract WHERE { 
+     # search person
+    ?item a ont:Person.
+    ?item ?label """ + n + """@en.
+    ?item rdfs:label ?itemLabel.
+    FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).
+
+    FILTER regex (?itemLabel, """ + n + """).        # exact name
+    Optional {?item ont:abstract ?abstract. FILTER(LANGMATCHES(LANG(?abstract),  'en')).}
+    } 
+    LIMIT 1
+    """)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    if results and results['results']['bindings'] != []:
+        data = results['results']['bindings']
+        results = {}
+        # print(data)
+        for d in data:
+            results['db_link'] = d['item']['value'] if 'item' in d else ""
+            results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+            results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
+        print(results)
+        return results
+    else:
+        print("Failed to find data")
+
+    return
+
+
+def db_search_show(name):
+    n = '"' + name + '"'
+    sparql = SPARQLWrapper("https://dbpedia.org/sparql")
+    sparql.setQuery("""
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        prefix ont: <http://dbpedia.org/ontology/>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+    SELECT * WHERE {
+     # search can either be a film or a tvShow so we search for both
+    Optional {?item a ont:Film. ?item ?label """ + n + """@en. ?item rdfs:label ?itemLabel. FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).}
+    Optional {?item a ont:TelevisionShow. ?item ?label """ + n + """@en. ?item rdfs:label ?itemLabel. FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).}
+
+   #
+  #FILTER regex (str(?itemLabel) , "Chris Pratt").        # exact name
+  Optional {?item ont:abstract ?abstract. FILTER(LANGMATCHES(LANG(?abstract),  'en')).}
+
+} 
+Limit 1
+    """)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    if results and results['results']['bindings'] != []:
+        data = results['results']['bindings']
+        results = {}
+        # print(data)
+        for d in data:
+            results['db_link'] = d['item']['value'] if 'item' in d else ""
+            results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+            results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
+        print(results)
+        return results
+    else:
+        print("Failed to find data")
+
+    return
 
