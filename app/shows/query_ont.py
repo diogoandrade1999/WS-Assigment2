@@ -100,7 +100,7 @@ def list_shows_type():
 
         SELECT ?typename
         WHERE {
-            ?type a show:Type.
+            ?type a show:Type .
             ?type pred:type ?typename .
         }
     """)

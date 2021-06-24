@@ -28,6 +28,7 @@ show:Duration rdf:type rdfs:Class .
 
 show:ReleaseYear rdf:type rdfs:Class .
 
+show:Show rdf:type rdfs:Class .
 
 #SUBCLASSES
 show:Director rdf:type rdfs:Class;
@@ -35,8 +36,6 @@ show:Director rdf:type rdfs:Class;
 
 show:Actor rdf:type rdfs:Class;
             rdfs:subClassOf show:People .
-
-show:Show rdf:type rdfs:Class .
 
 
 #PROPERTIES
