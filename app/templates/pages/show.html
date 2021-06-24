@@ -36,6 +36,7 @@
                 <p class="col-form-label" property="pred:publicationDate">{{details2.publicatioDate}}</p>
             </div>
         </div>
+        {% if details2.awards %}
         <h4>Awards:</h4>
         <ul>
         {% for award in details2.awards %}
@@ -44,7 +45,9 @@
             {% endif %}
         {% endfor %}
         </ul>
-        <h4>Awards:</h4>
+        {% endif %}
+        {% if details2.genres %}
+        <h4>Genre:</h4>
         <ul>
         {% for genre in details2.genres %}
             {% if genre != "" %}
@@ -52,6 +55,7 @@
             {% endif %}
         {% endfor %}
         </ul>
+        {% endif %}
         <a href="{{details2.wiki_link}}">{{details2.wiki_link}}</a>
         {% endif %}
     </div>

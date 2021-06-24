@@ -40,8 +40,8 @@ def wiki_person_data(name):
      """)
     sparql.setReturnFormat(JSON)
 
-    results = sparql.query().convert()
     try:
+        results = sparql.query().convert()
         if results and results['results']['bindings'] != []:
             data = results['results']['bindings']
             results = {}
@@ -100,8 +100,8 @@ def wiki_show_data(name):
   """)
     sparql.setReturnFormat(JSON)
 
-    results = sparql.query().convert()
     try:
+        results = sparql.query().convert()
         if results and results['results']['bindings'] != []:
             data = results['results']['bindings']
             results = {}
@@ -148,19 +148,24 @@ def dbpedia_search_person(name):
     LIMIT 1
     """)
     sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    if results and results['results']['bindings'] != []:
-        data = results['results']['bindings']
-        results = {}
-        # print(data)
-        for d in data:
-            results['db_link'] = d['item']['value'] if 'item' in d else ""
-            results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
-            results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
-        #print(results)
-        return results
-    else:
-        print("Failed to find data")
+
+    try:
+        results = sparql.query().convert()
+        if results and results['results']['bindings'] != []:
+            data = results['results']['bindings']
+            results = {}
+            # print(data)
+            for d in data:
+                results['db_link'] = d['item']['value'] if 'item' in d else ""
+                results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+                results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
+            #print(results)
+            return results
+        else:
+            print("Failed to find data")
+    except Exception:
+        print("Error")
+        return None
 
     return {}
 
@@ -187,19 +192,24 @@ def db_search_show(name):
     Limit 1
     """)
     sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    if results and results['results']['bindings'] != []:
-        data = results['results']['bindings']
-        results = {}
-        # print(data)
-        for d in data:
-            results['db_link'] = d['item']['value'] if 'item' in d else ""
-            results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
-            results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
-        #print(results)
-        return results
-    else:
-        print("Failed to find data")
+
+    try:
+        results = sparql.query().convert()
+        if results and results['results']['bindings'] != []:
+            data = results['results']['bindings']
+            results = {}
+            # print(data)
+            for d in data:
+                results['db_link'] = d['item']['value'] if 'item' in d else ""
+                results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
+                results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
+            #print(results)
+            return results
+        else:
+            print("Failed to find data")
+    except Exception:
+        print("Error")
+        return None
 
     return {}
 
