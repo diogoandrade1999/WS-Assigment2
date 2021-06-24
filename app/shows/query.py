@@ -387,7 +387,6 @@ def search_shows(page, title, types_list, countries_list, listed_in_list):
                                   }
         return results
     except Exception as e:
-        print(e)
         return None
 
 

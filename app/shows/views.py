@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from shows.query import *
+from shows.query_wiki import *
 
 
 def home(request):
@@ -52,7 +53,9 @@ def show(request):
         title = request.GET.get('title')
         if title == None:
             return redirect(shows)
-        params = {'title': title, 'show': show_detail(title)}
+        details = db_search_show(title)
+        details2 = wiki_show_data(title)
+        params = {'title': title, 'show': show_detail(title), 'details': details, 'details2': details2}
         return render(request, 'pages/show.html', params)
     return redirect(shows)
 
@@ -140,6 +143,8 @@ def person(request):
         if name == None:
             return redirect(home)
         directorof, castof = person_detail(name)
-        params = {'name': name, 'directorof': directorof, 'castof': castof}
+        details = dbpedia_search_person(name)
+        details2 = wiki_person_data(name)
+        params = {'name': name, 'directorof': directorof, 'castof': castof, 'details': details, 'details2': details2}
         return render(request, 'pages/person.html', params)
     return redirect(home)

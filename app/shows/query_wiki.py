@@ -54,7 +54,7 @@ def wiki_person_data(name):
                 results['birhtDate'] = d['birthDate']['value'] if 'birthDate' in d else ""
                 results['deathDate'] = d['dateOfDeath']['value'] if 'dateOfDeath' in d else "still alive"
                 results['professions'] = d['profession_names']['value'].split('|') if 'profession_names' in d else ""
-            print(results)
+            #print(results)
             return results
         else:
             print("Failed to find data")
@@ -113,9 +113,9 @@ def wiki_show_data(name):
                 results['show_type'] = d['type_name']['value'] if 'type_name' in d else ""
                 results['publicatioDate'] = d['publicatioDate']['value'] if 'publicatioDate' in d else ""
                 results['duration'] = d['time']['value'] if 'time' in d else ""
-                results['genres'] = d['genres']['value'].split('|') if 'genres' in d else ""
-                results['awards'] = d['awards']['value'].split('|') if 'awards' in d else ""
-            print(results)
+                results['genres'] = d['genres']['value'].split('|') if 'genres' in d else []
+                results['awards'] = d['awards']['value'].split('|') if 'awards' in d else []
+            #print(results)
             return results
         else:
             print("Failed to find data")
@@ -158,7 +158,7 @@ def dbpedia_search_person(name):
             results['db_link'] = d['item']['value'] if 'item' in d else ""
             results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
             results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
-        print(results)
+        #print(results)
         return results
     else:
         print("Failed to find data")
@@ -181,11 +181,11 @@ def db_search_show(name):
     Optional {?item a ont:TelevisionShow. ?item ?label """ + n + """@en. ?item rdfs:label ?itemLabel. FILTER(LANGMATCHES(LANG(?itemLabel),  'en')).}
 
    #
-  #FILTER regex (str(?itemLabel) , "Chris Pratt").        # exact name
-  Optional {?item ont:abstract ?abstract. FILTER(LANGMATCHES(LANG(?abstract),  'en')).}
+    #FILTER regex (str(?itemLabel) , "Chris Pratt").        # exact name
+    Optional {?item ont:abstract ?abstract. FILTER(LANGMATCHES(LANG(?abstract),  'en')).}
 
-} 
-Limit 1
+    } 
+    Limit 1
     """)
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
@@ -197,7 +197,7 @@ Limit 1
             results['db_link'] = d['item']['value'] if 'item' in d else ""
             results['name'] = d['itemLabel']['value'] if 'itemLabel' in d else ""
             results['abstract'] = d['abstract']['value'] if 'abstract' in d else ""
-        print(results)
+        #print(results)
         return results
     else:
         print("Failed to find data")
