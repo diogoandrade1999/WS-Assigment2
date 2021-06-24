@@ -139,11 +139,16 @@ def list_shows_listed_in():
 def list_directors(page):
     sparql = SPARQLWrapper(URL)
     sparql.setQuery("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
         PREFIX pred: <http://shows.org/pred/>
 
         SELECT ?directorname (GROUP_CONCAT(?title;SEPARATOR=";") AS ?titles)
-
         WHERE {
+            ?director a foaf:Person .
             ?show pred:director ?director .
             ?director pred:name ?directorname .
             ?show pred:title ?title .
@@ -172,10 +177,16 @@ def list_directors(page):
 def list_actors(page):
     sparql = SPARQLWrapper(URL)
     sparql.setQuery("""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
         PREFIX pred: <http://shows.org/pred/>
 
         SELECT ?actorname (GROUP_CONCAT(?title;SEPARATOR=";") AS ?titles)
         WHERE {
+            ?actor a foaf:Person .
             ?show pred:cast ?actor .
             ?actor pred:name ?actorname .
             ?show pred:title ?title .

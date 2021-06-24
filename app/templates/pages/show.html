@@ -12,31 +12,48 @@
     </div>
 
     <div class="mt-5 mb-5">
-        <h5>Abstract:</h5>
-        <p class="text-justify" property="pred:abstract">{{details.abstract}}</p>
-        <a href="{{details.db_link}}">{{details.db_link}}</a>
-        <br><br><br>
-        <h5>Show type:</h5>
-        <p class="text-justify" property="pred:abstract">{{details2.show_type}}</p>
-        <h5>Publicatio Date:</h5>
-        <p class="text-justify" property="pred:abstract">{{details2.publicatioDate}}</p>
-        <h5>Awards:</h5>
+        {% if details %}
+        <div class="row align-items-center mb-5">
+            <h4>Abstract</h4>
+            <p class="text-justify" property="pred:abstract">{{details.abstract}}</p>
+            <a href="{{details.db_link}}">{{details.db_link}}</a>
+        </div>
+        {% endif %}
+        {% if details2 %}
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <h4 class="">Show type:</h4>
+            </div>
+            <div class="col-auto">
+                <p class="col-form-label" property="pred:show_type">{{details2.show_type}}</p>
+            </div>
+        </div>
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <h4 class="">Publication Date:</h4>
+            </div>
+            <div class="col-auto">
+                <p class="col-form-label" property="pred:publicationDate">{{details2.publicatioDate}}</p>
+            </div>
+        </div>
+        <h4>Awards:</h4>
         <ul>
         {% for award in details2.awards %}
             {% if award != "" %}
-                <li class="text-justify" property="pred:abstract">{{award}}</li>
+                <li class="text-justify" property="pred:award">{{award}}</li>
             {% endif %}
         {% endfor %}
         </ul>
-        <h5>Awards:</h5>
+        <h4>Awards:</h4>
         <ul>
         {% for genre in details2.genres %}
             {% if genre != "" %}
-                <li class="text-justify" property="pred:abstract">{{genre}}</li>
+                <li class="text-justify" property="pred:genre">{{genre}}</li>
             {% endif %}
         {% endfor %}
         </ul>
         <a href="{{details2.wiki_link}}">{{details2.wiki_link}}</a>
+        {% endif %}
     </div>
 
     <div class="mt-2">

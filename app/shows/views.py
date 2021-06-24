@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from shows.query import *
+from shows.query_ont import *
 from shows.query_wiki import *
 
 
@@ -147,4 +148,27 @@ def person(request):
         details2 = wiki_person_data(name)
         params = {'name': name, 'directorof': directorof, 'castof': castof, 'details': details, 'details2': details2}
         return render(request, 'pages/person.html', params)
+    return redirect(home)
+
+
+def celebrity(request):
+    if request.method == 'GET' or request.method == 'POST':
+        params = {'name': request.GET.get('searchCelebrityName')}
+        if request.method == 'GET':
+            page = request.GET.get('page')
+            if page == None or params['name'] is None:
+                if page == None:
+                    page = 0
+                params['name'] = ""
+                params['celebrities'] = list_celebrity(int(page))
+            else:
+                params['celebrities'] = search_celebrity(int(page), params['name'])
+        elif request.method == 'POST':
+            page = 0
+            params['name'] = request.POST.get('searchCelebrityName')
+            params['celebrities'] = search_celebrity(page, params['name'])
+        page = int(page)
+        params['previous_page'] = page - 1 if page > 0 else None
+        params['next_page'] = page + 1 if len(params['celebrities']) == 30 else None
+        return render(request, 'pages/celebrity.html', params)
     return redirect(home)

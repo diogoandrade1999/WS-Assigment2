@@ -1,6 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
-from shows.views import home, shows, show, edit_show, directors, actors, person
+from shows.views import home, shows, show, edit_show, directors, actors, person, celebrity
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('directors/', directors, name='directors'),
     path('actors/', actors, name='actors'),
     path('person/', person, name='person'),
+    path('celebrity/', celebrity, name='celebrity'),
 ]

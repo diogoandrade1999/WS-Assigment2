@@ -61,8 +61,7 @@ def wiki_person_data(name):
     except Exception:
         print("Error")
         return None
-
-    return
+    return {}
 
 
 def wiki_show_data(name):
@@ -123,7 +122,7 @@ def wiki_show_data(name):
         print("Error")
         return None
 
-    return
+    return {}
 
 
 def dbpedia_search_person(name):
@@ -163,7 +162,7 @@ def dbpedia_search_person(name):
     else:
         print("Failed to find data")
 
-    return
+    return {}
 
 
 def db_search_show(name):
@@ -202,5 +201,5 @@ def db_search_show(name):
     else:
         print("Failed to find data")
 
-    return
+    return {}
 

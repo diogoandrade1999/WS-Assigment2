@@ -10,23 +10,46 @@
     </div>
 
     <div class="mt-5 mb-5">
-        <h5>Abstract:</h5>
-        <p class="text-justify" property="pred:abstract">{{details.abstract}}</p>
-        <a href="{{details.db_link}}">{{details.db_link}}</a>
-        <br><br><br>
-        <h5>Birth Location:</h5>
-        <p class="text-justify" property="pred:abstract">{{details2.birthLocation}}</p>
-        <h5>Birht Date:</h5>
-        <p class="text-justify" property="pred:abstract">{{details2.birhtDate}}</p>
-        <h5>Death Date:</h5>
-        <p class="text-justify" property="pred:abstract">{{details2.deathDate}}</p>
-        <h5>Professions:</h5>
+        {% if details %}
+        <div class="row align-items-center mb-5">
+            <h4>Abstract</h4>
+            <p class="text-justify" property="pred:abstract">{{details.abstract}}</p>
+            <a href="{{details.db_link}}">{{details.db_link}}</a>
+        </div>
+        {% endif %}
+        {% if details2 %}
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <h4 class="">Birth Location:</h4>
+            </div>
+            <div class="col-auto">
+                <p class="col-form-label" property="pred:birthLocation">{{details2.birthLocation}}</p>
+            </div>
+        </div>
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <h4 class="">Birht Date:</h4>
+            </div>
+            <div class="col-auto">
+                <p class="col-form-label" property="pred:birhtDate">{{details2.birhtDate}}</p>
+            </div>
+        </div>
+        <div class="row align-items-center mb-2">
+            <div class="col-auto">
+                <h4 class="">Death Date:</h4>
+            </div>
+            <div class="col-auto">
+                <p class="col-form-label" property="pred:deathDate">{{details2.deathDate}}</p>
+            </div>
+        </div>
+        <h4 class="">Professions:</h4>
         <ul>
-        {% for profession in details2.professions %}
-            <li class="text-justify" property="pred:abstract">{{profession}}</li>
-        {% endfor %}
+            {% for profession in details2.professions %}
+                <li class="col-form-label" property="pred:profession">{{profession}}</li>
+            {% endfor %}
         </ul>
         <a href="{{details2.wiki_link}}">{{details2.wiki_link}}</a>
+        {% endif %}
     </div>
 
     {% if directorof %}
