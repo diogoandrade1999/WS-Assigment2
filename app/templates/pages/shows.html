@@ -3,7 +3,10 @@
 {% load hastag %}
 {% load ampersand %}
 {% block content %}
-<div>
+<div
+    xmlns:show="http://show.org/show/"
+    xmlns:pred="http://shows.org/pred/"
+>
     <div class="mt-2 mb-5">
         <h1 class="text-center">Shows</h1>
     </div>
@@ -71,31 +74,32 @@
             </thead>
             <tbody>
                 {% if shows %} {% for title, show in shows.items %}
-                <tr class="align-middle">
+                <tr class="align-middle" typeof="show:Show">
                     <td class="col-4">
                         <a
                             class="btn btn-outline-dark w-100"
                             href="{% url 'show' %}?title={{title|hastag}}"
+                            property="pred:title"
                             >{{title}}</a
                         >
                     </td>
                     <td class="col-1">
-                        <p class="text-center">{{show.type}}</p>
+                        <p class="text-center" property="pred:type" typeof="show:Type">{{show.type}}</p>
                     </td>
                     <td class="col-1">
-                        <p class="text-center">{{show.release_year}}</p>
+                        <p class="text-center" property="pred:release_year" typeof="show:ReleaseYear">{{show.release_year}}</p>
                     </td>
                     <td class="col-3">
                         <ul class="list-unstyled list-group">
                             {% for country in show.countries %}
-                            <li class="mb-1">{{country}}</li>
+                            <li class="mb-1" property="pred:country" typeof="show:Country">{{country}}</li>
                             {% endfor %}
                         </ul>
                     </td>
                     <td class="col-3">
                         <ul class="list-unstyled list-group">
                             {% for l in show.listed_in %}
-                            <li class="mb-1">{{l}}</li>
+                            <li class="mb-1" property="pred:listed_in" typeof="show:ListedIn">{{l}}</li>
                             {% endfor %}
                         </ul>
                     </td>

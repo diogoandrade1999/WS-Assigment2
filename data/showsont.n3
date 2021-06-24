@@ -6,46 +6,67 @@
 @prefix show: <http://show.org/show/> .
 @prefix pred: <http://shows.org/pred/> .
 
-foaf:Person rdf:type rdfs:Class .
 
-foaf:Group rdf:type rdfs:Class .
-
+#SUBPROPERTIES
 pred:name rdfs:subPropertyOf foaf:name .
 
-pred:people rdf:type rdfs:Class .
 
-pred:people rdfs:subClassOf foaf:Person ;
-          rdfs:domain pred:name .
+#CLASSES
+foaf:Person rdf:type rdfs:Class .
+
+show:People rdf:type rdfs:Class ;
+            rdfs:subClassOf foaf:Person ;
+            rdfs:domain pred:name .
+
+show:Type rdf:type rdfs:Class .
+
+show:Country rdf:type rdfs:Class .
+
+show:ListedIn rdf:type rdfs:Class .
+
+show:Duration rdf:type rdfs:Class .
+
+show:ReleaseYear rdf:type rdfs:Class .
+
+
+#SUBCLASSES
+show:Director rdf:type rdfs:Class;
+            rdfs:subClassOf show:People .
+
+show:Actor rdf:type rdfs:Class;
+            rdfs:subClassOf show:People .
 
 show:Show rdf:type rdfs:Class .
 
+
+#PROPERTIES
 pred:type rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdfs:Literal .
+          rdfs:range show:Type .
 
 pred:cast rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range pred:people .
+          rdfs:range show:Actor .
 
 pred:director rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range pred:people .
+          rdfs:range show:Director .
 
 pred:country rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdfs:Literal .
+          rdfs:range show:Country .
 
 pred:release_year rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger" .
+          rdfs:range show:ReleaseYear .
 
 pred:duration rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdfs:Literal .
+          rdfs:range show:Duration .
 
 pred:listed_in rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdfs:Literal .
+          rdfs:range show:ListedIn .
 
 pred:date_added rdf:type rdf:Property ;
           rdfs:domain show:Show ;
@@ -57,4 +78,13 @@ pred:description rdf:type rdf:Property ;
 
 pred:title rdf:type rdf:Property ;
           rdfs:domain show:Show ;
+          rdfs:range rdfs:Literal .
+
+##PROPERTIES INFERIDAS
+pred:dualrole rdf:type rdf:Property ;
+          rdfs:domain show:People ;
+          rdfs:range show:Show .
+
+pred:popularity rdf:type rdf:Property ;
+          rdfs:domain show:People ;
           rdfs:range rdfs:Literal .

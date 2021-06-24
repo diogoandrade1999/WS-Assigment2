@@ -66,13 +66,18 @@
                 <tbody class="fs-5">
                     <tr class="align-middle">
                         <th class="col-3">Type</th>
-                        <td class="col-9" property="pred:type">{{show.type}}</td>
+                        <td class="col-9" property="pred:type" typeof="show:Type">{{show.type}}</td>
                     </tr>
                     <tr class="align-middle">
                         <th class="col-3">Countries</th>
                         <td class="col-9">
                         {% for country in show.countries %}
-                            <span class="badge rounded-pill bg-dark" property="pred:coutry">{{country}}</span>
+                            <span
+                                class="badge rounded-pill bg-dark"
+                                property="pred:country"
+                                typeof="show:Country"
+                                >{{country}}</span
+                            >
                         {% endfor %}
                         </td>
                     </tr>
@@ -86,17 +91,17 @@
                     </tr>
                     <tr class="align-middle">
                         <th class="col-3">Release Year</th>
-                        <td class="col-9" property="pred:release_year">{{show.release_year}}</td>
+                        <td class="col-9" property="pred:release_year" typeof="show:ReleaseYear">{{show.release_year}}</td>
                     </tr>
                     <tr class="align-middle">
                         <th class="col-3">Duration</th>
-                        <td class="col-9" property="pred:duration">{{show.duration}}</td>
+                        <td class="col-9" property="pred:duration" typeof="show:Duration">{{show.duration}}</td>
                     </tr>
                     <tr class="align-middle">
                         <th class="col-3">Listed In</th>
                         <td class="col-9">
                         {% for l in show.listed_in %}
-                            <span class="badge rounded-pill bg-dark" property="pred:listed_in">{{l}}</span>
+                            <span class="badge rounded-pill bg-dark" property="pred:listed_in" typeof="show:ListedIn">{{l}}</span>
                         {% endfor %}
                         </td>
                     </tr>
@@ -109,7 +114,7 @@
                                 class="btn btn-outline-dark mb-1"
                                 href="{% url 'person' %}?name={{person}}"
                                 property="pred:director"
-                                typeof="pred:people"
+                                typeof="show:Director"
                                 ><span property="pred:name">{{person}}</span></a
                             >
                         {% endfor %}
@@ -125,7 +130,7 @@
                                 class="btn btn-outline-dark  mb-1"
                                 href="{% url 'person' %}?name={{person}}"
                                 property="pred:cast"
-                                typeof="pred:people"
+                                typeof="show:Actor"
                                 ><span property="pred:name">{{person}}</span></a
                             >
                         {% endfor %}

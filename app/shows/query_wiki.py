@@ -112,8 +112,8 @@ def wiki_show_data(name):
                 results['show_type'] = d['type_name']['value'] if 'type_name' in d else ""
                 results['publicatioDate'] = d['publicatioDate']['value'] if 'publicatioDate' in d else ""
                 results['duration'] = d['time']['value'] if 'time' in d else ""
-                results['genres'] = d['genres']['value'].split('|') if 'genres' in d else []
-                results['awards'] = d['awards']['value'].split('|') if 'awards' in d else []
+                results['genres'] = set(d['genres']['value'].split('|')) if 'genres' in d else []
+                results['awards'] = set(d['awards']['value'].split('|')) if 'awards' in d else []
             #print(results)
             return results
         else:

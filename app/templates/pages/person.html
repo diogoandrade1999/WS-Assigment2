@@ -2,7 +2,7 @@
 <div
     xmlns:show="http://show.org/show/"
     xmlns:pred="http://shows.org/pred/"
-    typeof="pred:people"
+    typeof="show:People"
     resource="#{{name}}"
 >
     <div class="mt-2 mb-5">
@@ -90,7 +90,7 @@
                             class="btn btn-outline-dark mb-1"
                             href="{% url 'person' %}?name={{person}}"
                             property="pred:director"
-                            typeof="pred:people"
+                            typeof="show:Director"
                             resource="#{{person}}"
                             ><span property="pred:name">{{person}}</span></a
                         >
@@ -141,7 +141,7 @@
                             class="btn btn-outline-dark mb-1"
                             href="{% url 'person' %}?name={{person}}"
                             property="pred:cast"
-                            typeof="pred:people"
+                            typeof="show:Actor"
                             resource="#{{person}}"
                             ><span property="pred:name">{{person}}</span></a
                         >

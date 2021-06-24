@@ -4,7 +4,7 @@
 {% block content %}
 <div>
     <div class="mt-2 mb-5">
-        <h1 class="text-center">Celebrities</h1>
+        <h1 class="text-center">Celebrities With Dual Role</h1>
     </div>
 
     <div class="mt-2 mb-5">
@@ -24,10 +24,12 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Popularity</th>
+                    <th scope="col">Dual Role</th>
                 </tr>
             </thead>
             <tbody>
-                {% if celebrities %} {% for celebrity in celebrities %}
+                {% if celebrities %} {% for celebrity, info in celebrities.items %}
                 <tr class="align-middle h-card">
                     <td class="col-4">
                         <a
@@ -35,6 +37,22 @@
                             href="{% url 'person' %}?name={{celebrity}}"
                             >{{celebrity}}</a
                         >
+                    </td>
+                    <td class="col-2">
+                        <span class="badge rounded-pill bg-dark w-100 p-ranking">{{info.popularity}}</span>
+                    </td>
+                    <td class="col-6">
+                        <ul class="list-unstyled list-group">
+                            {% for show in info.titles %}
+                            <li class="mb-1 h-entry">
+                                <a
+                                    class="btn btn-outline-dark w-100 p-title u-url"
+                                    href="{% url 'show' %}?title={{show|hastag}}"
+                                    >{{show}}</a
+                                >
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </td>
                 </tr>
                 {% endfor %} {% else %}
