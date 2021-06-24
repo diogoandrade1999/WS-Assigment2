@@ -1,6 +1,5 @@
 from SPARQLWrapper import SPARQLWrapper, JSON, POST
 
-
 URL = "http://127.0.0.1:7200/repositories/shows"
 
 
@@ -53,10 +52,10 @@ def list_shows(page):
             for d in data:
                 title = d['title']['value']
                 results[title] = {'type': d['typename']['value'],
-                                'countries': list(set(d['countriesname']['value'].split(','))),
-                                'listed_in': list(set(d['listedname']['value'].split(','))),
-                                'release_year': d['release_yearname']['value'],
-                                }
+                                  'countries': list(set(d['countriesname']['value'].split(','))),
+                                  'listed_in': list(set(d['listedname']['value'].split(','))),
+                                  'release_year': d['release_yearname']['value'],
+                                  }
         return results
     except Exception:
         return None
@@ -239,9 +238,9 @@ def person_detail(name):
                         directors = directors.split(';')
                         directors.remove(name)
                     results1[title] = {'type': d['typename']['value'],
-                                    'countries': d['countriesname']['value'].split(';'),
-                                    'directors': directors
-                                    }
+                                       'countries': d['countriesname']['value'].split(';'),
+                                       'directors': directors
+                                       }
     except Exception:
         results1 = None
 
@@ -336,15 +335,15 @@ def show_detail(title):
                 if cast != "":
                     cast = cast.split(';')
                 results = {'type': d['typename']['value'],
-                            'description': d['description']['value'],
-                            'date_added': d['date_added']['value'],
-                            'release_year': d['release_yearname']['value'],
-                            'duration': d['durationname']['value'],
-                            'countries': d['countriesname']['value'].split(';'),
-                            'listed_in': d['listedname']['value'].split(';'),
-                            'directors': directors,
-                            'cast': cast
-                            }
+                           'description': d['description']['value'],
+                           'date_added': d['date_added']['value'],
+                           'release_year': d['release_yearname']['value'],
+                           'duration': d['durationname']['value'],
+                           'countries': d['countriesname']['value'].split(';'),
+                           'listed_in': d['listedname']['value'].split(';'),
+                           'directors': directors,
+                           'cast': cast
+                           }
         return results
     except Exception:
         return None
@@ -382,10 +381,10 @@ def search_shows(page, title, types_list, countries_list, listed_in_list):
             for d in data:
                 title = d['title']['value']
                 results[title] = {'type': d['typename']['value'],
-                                'countries': list(set(d['countriesname']['value'].split(','))),
-                                'listed_in': list(set(d['listedname']['value'].split(','))),
-                                'release_year': d['release_yearname']['value'],
-                                }
+                                  'countries': list(set(d['countriesname']['value'].split(','))),
+                                  'listed_in': list(set(d['listedname']['value'].split(','))),
+                                  'release_year': d['release_yearname']['value'],
+                                  }
         return results
     except Exception as e:
         print(e)
