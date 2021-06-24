@@ -3,6 +3,7 @@
     xmlns:show="http://show.org/show/"
     xmlns:pred="http://shows.org/pred/"
     typeof="pred:people"
+    resource="#{{name}}"
 >
     <div class="mt-2 mb-5">
         <h1 class="text-center" property="pred:name">{{name}}</h1>
@@ -20,7 +21,12 @@
             </thead>
             <tbody>
                 {% for title, show in directorof.items %}
-                <tr class="align-middle" property="pred:director" typeof="show:Show">
+                <tr
+                    class="align-middle"
+                    property="pred:director"
+                    typeof="show:Show"
+                    resource="#{{title|hastag}}"
+                >
                     <td class="col-4">
                         <a
                             class="btn btn-outline-dark w-100"
@@ -41,6 +47,7 @@
                             href="{% url 'person' %}?name={{person}}"
                             property="pred:director"
                             typeof="pred:people"
+                            resource="#{{person}}"
                             ><span property="pred:name">{{person}}</span></a
                         >
                         {% endfor %} {% else %}
@@ -65,7 +72,12 @@
             </thead>
             <tbody>
                 {% for title, show in castof.items %}
-                <tr class="align-middle" property="pred:director" typeof="show:Show">
+                <tr
+                    class="align-middle"
+                    property="pred:director"
+                    typeof="show:Show"
+                    resource="#{{title|hastag}}"
+                >
                     <td class="col-4">
                         <a
                             class="btn btn-outline-dark w-100"
@@ -86,6 +98,7 @@
                             href="{% url 'person' %}?name={{person}}"
                             property="pred:cast"
                             typeof="pred:people"
+                            resource="#{{person}}"
                             ><span property="pred:name">{{person}}</span></a
                         >
                         {% endfor %} {% else %}

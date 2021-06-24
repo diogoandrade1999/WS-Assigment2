@@ -10,8 +10,6 @@ foaf:Person rdf:type rdfs:Class .
 
 foaf:Group rdf:type rdfs:Class .
 
-pred:cast rdfs:subClassOf foaf:Group .
-
 pred:name rdfs:subPropertyOf foaf:name .
 
 pred:people rdf:type rdfs:Class .
@@ -39,7 +37,7 @@ pred:country rdf:type rdf:Property ;
 
 pred:release_year rdf:type rdf:Property ;
           rdfs:domain show:Show ;
-          rdfs:range rdfs:Literal .
+          rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger" .
 
 pred:duration rdf:type rdf:Property ;
           rdfs:domain show:Show ;
